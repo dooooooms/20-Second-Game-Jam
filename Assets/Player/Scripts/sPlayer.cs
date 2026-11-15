@@ -6,7 +6,8 @@ public class sPlayer : MonoBehaviour
     public Transform head;
     public Rigidbody body;
     public Camera cam;
-
+    public InputActionAsset actions;
+    //public InputAction interactAction;
     public float walkSpeed;
     public float runSpeed;
 
@@ -20,6 +21,7 @@ public class sPlayer : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         playerUI = GetComponent<sPlayerUI>();
+
     }
 
     // Update is called once per frame
@@ -37,7 +39,10 @@ public class sPlayer : MonoBehaviour
                 sInteractableBase interactable = hit.collider.GetComponent<sInteractableBase>();
 
                 playerUI.UpdatePrompt(hit.collider.GetComponent<sInteractableBase>().prompt);
-                if (InputAction.actionMap.)
+                if (actions.FindActionMap("Default").FindAction("Interact").triggered)
+                {
+                    interactable.BaseInt();
+                }
             }
         }
     }
