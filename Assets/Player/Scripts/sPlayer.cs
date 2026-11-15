@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class sPlayer : MonoBehaviour
 {
@@ -9,20 +10,38 @@ public class sPlayer : MonoBehaviour
     public float walkSpeed;
     public float runSpeed;
 
-
+    private float interactdist = 3f;
+    [SerializeField]
+    private LayerMask mask;
+    private sPlayerUI playerUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        playerUI = GetComponent<sPlayerUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        playerUI.UpdatePrompt(string.Empty);
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * 2f);
+        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+        RaycastHit hit;
 
+        if (Physics.Raycast(ray, out hit, interactdist, mask))
+        {
+            if (hit.collider.GetComponent<sInteractableBase>() != null)
+            {
+                sInteractableBase interactable = hit.collider.GetComponent<sInteractableBase>();
+
+                playerUI.UpdatePrompt(hit.collider.GetComponent<sInteractableBase>().prompt);
+                if (InputAction.actionMap.)
+            }
+        }
     }
+
 
     private void FixedUpdate()
     {
@@ -34,6 +53,10 @@ public class sPlayer : MonoBehaviour
         body.linearVelocity = newVelocity;
         body.linearVelocity = transform.TransformDirection(newVelocity);
     }
+
+
+
+
 
     private void LateUpdate()
     {
