@@ -17,7 +17,7 @@ public class sDrawer : sInteractableBase
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        open = true;
+
         depth = transform.localScale.x - 0.1f;
 
         closedPos = transform.position;
@@ -57,7 +57,7 @@ public class sDrawer : sInteractableBase
 
             while (distLeft > 0)
             {
-                transform.position = Vector3.Lerp(openPos, closedPos, curve.Evaluate(1 - (distLeft / distance)));
+                transform.position = Vector3.Lerp(closedPos, openPos, curve.Evaluate(1 - (distLeft / distance)));
                 distLeft -= speed * Time.deltaTime;
                 yield return null;
             }
@@ -71,7 +71,7 @@ public class sDrawer : sInteractableBase
             //float distLeft = distance;
             while (distLeft > 0)
             {
-                transform.position = Vector3.Lerp(closedPos, openPos, curve.Evaluate(1 - (distLeft / distance)));
+                transform.position = Vector3.Lerp(openPos, closedPos, curve.Evaluate(1 - (distLeft / distance)));
                 distLeft -= speed * Time.deltaTime;
                 yield return null;
             }

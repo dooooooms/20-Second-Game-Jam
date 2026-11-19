@@ -10,7 +10,7 @@ public class sPlayer : MonoBehaviour
     //public InputAction interactAction;
     public float walkSpeed;
     public float runSpeed;
-
+    private RaycastHit hit;
     private float interactdist = 3f;
     [SerializeField]
     private LayerMask mask;
@@ -30,21 +30,9 @@ public class sPlayer : MonoBehaviour
         playerUI.UpdatePrompt(string.Empty);
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * 2f);
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactdist, mask))
-        {
-            if (hit.collider.GetComponent<sInteractableBase>() != null)
-            {
-                sInteractableBase interactable = hit.collider.GetComponent<sInteractableBase>();
+        InteractCast(hit, ray);
 
-                playerUI.UpdatePrompt(hit.collider.GetComponent<sInteractableBase>().prompt);
-                if (actions.FindActionMap("Default").FindAction("Interact").triggered)
-                {
-                    interactable.BaseInt();
-                }
-            }
-        }
     }
 
 
@@ -60,7 +48,22 @@ public class sPlayer : MonoBehaviour
     }
 
 
+    private void InteractCast(RaycastHit hit, Ray ray)
+    {
+        if (Physics.Raycast(ray, out hit, interactdist, mask))
+        {
+            if (hit.collider.GetComponent<sInteractableBase>() != null)
+            {
+                sInteractableBase interactable = hit.collider.GetComponent<sInteractableBase>();
 
+                playerUI.UpdatePrompt(hit.collider.GetComponent<sInteractableBase>().prompt);
+                if (actions.FindActionMap("Default").FindAction("Interact").triggered)
+                {
+                    interactable.BaseInt();
+                }
+            }
+        }
+    }
 
 
     private void LateUpdate()
